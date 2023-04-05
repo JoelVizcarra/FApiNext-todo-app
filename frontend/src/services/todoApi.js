@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import Router from 'next/router';
 
 const instance = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_API_URL}/api/v1`,
@@ -17,11 +18,19 @@ instance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response.status === 401) {
-      localStorage.removeItem('token');
-      toast.error('Your session has expired, please log in again', {
-        position: 'top-right',
-      });
+      if (
+        ['Not authenticated', 'Invalid JWT'].includes(
+          error.response.data.detail
+        )
+      ) {
+        localStorage.removeItem('token');
+        toast.error('Your session has expired, please log in again', {
+          position: 'top-right',
+        });
+        Router.push('/login');
+      }
     }
+    return Promise.reject(error);
   }
 );
 

@@ -99,7 +99,7 @@ export default function Home() {
       </FormProvider>
       {data ? (
         <List>
-          {data.data.map((todo) => (
+          {data?.data?.map((todo) => (
             <TodoItem
               {...todo}
               key={todo.id}
