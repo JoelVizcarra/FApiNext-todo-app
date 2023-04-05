@@ -1,0 +1,41 @@
+version: '3'
+services:
+  todo-app-backend:
+    container_name: todo-app-backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - '9000:9000'
+    volumes:
+      - ./backend:/app
+    command: uvicorn main:app --host 0.0.0.0 --port 9000 --reload
+    depends_on:
+      - posgresql
+
+  todo-app-frontend:
+    container_name: todo-app-frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+    command: npm run dev
+    ports:
+      - '3000:3000'
+
+  todo-app-db:
+    container_name: todo-app-db
+    image: postgres:12.0-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: todoapp
+
+volumes:
+  postgres_data:

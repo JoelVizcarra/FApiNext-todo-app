@@ -1,0 +1,11 @@
+**/node_modules/
+**/dist
+npm-debug.log
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.git
+.aws
+pip-log.txt
+pip-delete-this-directory.txt
