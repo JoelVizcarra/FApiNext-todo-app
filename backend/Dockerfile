@@ -10,6 +10,5 @@ COPY ./requirements.txt /app
 RUN pip install -r requirements.txt
 
 COPY . /app
-ENV FLASK_APP=main
 
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
